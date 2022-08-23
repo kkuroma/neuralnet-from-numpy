@@ -15,7 +15,7 @@ def onehot(y :int, n_class=10):
                 out.append(0)
         return np.array(out).reshape(-1,1)
 
-if (__name__=='main'):
+if (__name__=='__main__'):
 
     (x_train, y_train), (x_test, y_test) = keras.datasets.mnist.load_data()
 
