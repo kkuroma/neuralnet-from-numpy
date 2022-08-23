@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 from nn import *
 from utils import *
 
+epochs = 5
+
 def onehot(y :int, n_class=10):
         out = []
         for i in range(n_class):
@@ -41,7 +43,7 @@ if (__name__=='main'):
 
     nn = NeuralNet(dense_layers, BCE_cost_f, BCE_cost_f_back, learning_rate = 1e-5)
     cost_log = []
-    for i in range(100):   
+    for i in range(epochs):   
         cost = nn.train_on_dataset(X_train, y_train, batch_size=100)
         cost_log.append(cost)
         
