@@ -64,6 +64,9 @@ class Dense:
             self.biases = self.biases - self.db * learning_rate
             self.batch_counter = 0
 
+            self.dw = np.zeros(self.weights.shape)
+            self.db = np.zeros(self.biases.shape)
+
 class NeuralNet:
     
     def __init__(
