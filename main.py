@@ -28,8 +28,9 @@ if (__name__=='__main__'):
     y_test = np.array([onehot(y_test[i]) for i in range(test_size)])
 
     dense_layers = [
-        Dense(784,69,1,'relu'),
-        Dense(69,10,1,'softmax')
+        Dense(784,100,1,'relu'),
+        Dense(100,69,1,'relu'),
+        Dense(69,10,1,'softmax'),
     ]
 
     nn = NeuralNet(dense_layers, BCE_cost_f, BCE_cost_f_back, learning_rate = 1e-4)

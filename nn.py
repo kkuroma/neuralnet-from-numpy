@@ -11,7 +11,7 @@ class Dense:
         shape : int, 
         activation = None,
     ):
-        self.weights = np.random.rand(in_features, out_features)-0.5
+        self.weights = np.random.rand(in_features, out_features)*2-1
         self.biases = np.random.rand(out_features, shape)
         
         if activation=='relu':
@@ -49,13 +49,14 @@ class Dense:
         da_by_dz = da_this_layer * self.actback(self.z)
         dz_by_db = np.ones(self.biases.shape)
         dz_by_dw = a_prev_layer
-        self.db += dz_by_db * da_by_dz
-        self.dw += np.dot(dz_by_dw, da_by_dz.T)
+        self.db += np.clip(dz_by_db * da_by_dz, -1, 1)
+        self.dw += np.clip(np.dot(dz_by_dw, da_by_dz.T), -1, 1)
         da_prev_layer = np.dot(self.weights, da_by_dz)
         return da_prev_layer
     
     def update(self, learning_rate = 1e-3):
         if self.batch_counter > 0:
+
             self.weights = self.weights - self.dw * learning_rate / self.batch_counter
             self.biases = self.biases - self.db * learning_rate / self.batch_counter
             self.batch_counter = 0
