@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from nn import *
 from utils import *
 
-epochs = 5
+epochs = 20
 
 def onehot(y :int, n_class=10):
         out = []
@@ -32,16 +32,16 @@ if (__name__=='__main__'):
         Dense(69,10,1,'softmax')
     ]
 
-    nn = NeuralNet(dense_layers, BCE_cost_f, BCE_cost_f_back, learning_rate = 1e-4)
+    nn = NeuralNet(dense_layers, BCE_cost_f, BCE_cost_f_back, learning_rate = 1e-6)
     cost_log = []
     for i in range(epochs):   
         cost = nn.train_on_dataset(X_train, y_train, batch_size=100)
         cost_log.append(cost)
         
-    plt.plot(cost_log)
-    plt.show()
-
     y_pred = nn.predict_on_batch(X_test)
     acc = np.argmax(y_pred, axis=1) == np.argmax(y_test, axis=1)
     acc = np.sum(acc)/len(acc)
     print('Accuracy = ',round(acc*100,2))
+
+    plt.plot(cost_log)
+    plt.show()
