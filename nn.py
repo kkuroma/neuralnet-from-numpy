@@ -1,5 +1,6 @@
 from utils import *
 import numpy as np
+from tqdm import tqdm
 
 class Dense:
     
@@ -104,20 +105,29 @@ class NeuralNet:
     def all_update(self):
         for layer in self.layers:
             layer.update(learning_rate = self.learning_rate)
-            
-    def train_on_batch(
+    
+    def train_on_dataset(
         self,
         batch : np.ndarray,
         annotations : np.ndarray,
+        batch_size = 100,
     ):
-        cost_counter = 0
-        for item, y_true in zip(batch, annotations):
+        cost_counter = []
+        batch_counter = 0
+        pbar = tqdm(zip(batch, annotations))
+        for item, y_true in pbar:
             y_pred = self.all_forward(item)
             cost = self.cost_f(y_pred, y_true)
             self.all_backprop(y_pred, y_true)
-            cost_counter += cost
-        cost_counter /= batch.shape[0]        
-        self.all_update()
+            cost_counter.append(cost)
+            batch_counter += 1
+            if batch_counter == batch_size: 
+                self.all_update()
+                batch_counter=0
+                pbar.set_description(f'cost = {round(np.average(cost_counter),2)}')
+        cost_counter = np.average(cost_counter)        
+        self.all_update()  
+        
         return cost_counter
     
     def predict_on_batch(

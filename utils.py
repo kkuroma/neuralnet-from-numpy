@@ -1,4 +1,5 @@
 import numpy as np
+eps = 1e-7
 
 def relu(x):
     return np.maximum(x,0)
@@ -15,10 +16,13 @@ def sigmoid_back(x):
 
 def softmax(x):
     exp = np.exp(x)
-    return exp / np.sum(exp, axis=0, keepdims=1)
+    exp = np.clip(exp, eps, 100/eps)
+    expsum = np.sum(exp, axis=0, keepdims=1)
+    return exp / expsum
 
 def softmax_back(x):
     exp = np.exp(x)
+    exp = np.clip(exp, eps, 100/eps)
     expsum = np.sum(exp, axis=0, keepdims=1)
     return - exp * (exp-expsum) / expsum**2
     
@@ -35,21 +39,17 @@ def l2_cost_f_back(y_pred, y_true):
     return 2 * (y_pred - y_true)
 
 def BCE_cost_f(y_pred, y_true):
-    eps = 1e-7
     y_pred = np.clip(y_pred, eps, 1-eps)
     return np.sum(-(y_true * np.log(y_pred) + (1-y_true) * np.log(1-y_pred)))
 
 def BCE_cost_f_back(y_pred, y_true):
-    eps = 1e-7
     y_pred = np.clip(y_pred, eps, 1-eps)
     return - np.divide(y_true,y_pred) + np.divide((1-y_true),(1-y_pred))
 
 def CCE_cost_f(y_pred, y_true):
-    eps = 1e-7
     y_pred = np.clip(y_pred, eps, 1-eps)
     return np.sum(-(y_true * np.log(y_pred)))
 
 def CCE_cost_f_back(y_pred, y_true):
-    eps = 1e-7
     y_pred = np.clip(y_pred, eps, 1-eps)
     return - np.divide(y_true,y_pred)
