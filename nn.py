@@ -49,16 +49,19 @@ class Dense:
         da_by_dz = da_this_layer * self.actback(self.z)
         dz_by_db = np.ones(self.biases.shape)
         dz_by_dw = a_prev_layer
-        self.db += np.clip(dz_by_db * da_by_dz, -1, 1)
-        self.dw += np.clip(np.dot(dz_by_dw, da_by_dz.T), -1, 1)
+        self.db += dz_by_db * da_by_dz
+        self.dw += np.dot(dz_by_dw, da_by_dz.T)
         da_prev_layer = np.dot(self.weights, da_by_dz)
         return da_prev_layer
     
     def update(self, learning_rate = 1e-3):
         if self.batch_counter > 0:
 
-            self.weights = self.weights - self.dw * learning_rate / self.batch_counter
-            self.biases = self.biases - self.db * learning_rate / self.batch_counter
+            self.dw = np.clip(self.dw / self.batch_counter, -1e5, 1e5)
+            self.db = np.clip(self.db / self.batch_counter, -1e5, 1e5)
+
+            self.weights = self.weights - self.dw * learning_rate 
+            self.biases = self.biases - self.db * learning_rate
             self.batch_counter = 0
 
 class NeuralNet:
