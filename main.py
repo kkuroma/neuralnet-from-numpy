@@ -22,15 +22,6 @@ if (__name__=='__main__'):
     train_size = 60000
     test_size = 10000
 
-    def onehot(y :int, n_class=10):
-        out = []
-        for i in range(n_class):
-            if i==y:
-                out.append(1)
-            else:
-                out.append(0)
-        return np.array(out).reshape(-1,1)
-
     X_train = np.array([x_train[i].reshape(-1,1) for i in range(train_size)])/255
     y_train = np.array([onehot(y_train[i]) for i in range(train_size)])
     X_test = np.array([x_test[i].reshape(-1,1) for i in range(test_size)])/255
