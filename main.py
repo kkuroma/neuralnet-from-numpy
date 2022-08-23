@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from nn import *
 from utils import *
 
-epochs = 5
+epochs = 20
 
 def onehot(y :int, n_class=10):
         out = []

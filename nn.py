@@ -135,7 +135,7 @@ class NeuralNet:
         batch : np.ndarray,
     ):
         out = []
-        for item in batch:
+        for item in tqdm(batch):
             y_pred = self.all_forward(item)
             out.append(y_pred)
         return np.array(out)
