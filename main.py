@@ -32,7 +32,7 @@ if (__name__=='__main__'):
         Dense(69,10,1,'softmax')
     ]
 
-    nn = NeuralNet(dense_layers, BCE_cost_f, BCE_cost_f_back, learning_rate = 1e-6)
+    nn = NeuralNet(dense_layers, BCE_cost_f, BCE_cost_f_back, learning_rate = 1e-4)
     cost_log = []
     for i in range(epochs):   
         cost = nn.train_on_dataset(X_train, y_train, batch_size=100)
